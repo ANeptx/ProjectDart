@@ -193,7 +193,7 @@ class _AuthenState extends State<Authen> {
                     children: [
                       RadioListTile(
                         value: 'User',
-                        groupValue: 'typeUser',
+                        groupValue: typeUser,
                         onChanged: (value) {
                           setState(() {
                             typeUser = value;
@@ -203,7 +203,7 @@ class _AuthenState extends State<Authen> {
                       ),
                       RadioListTile(
                         value: 'Adopter',
-                        groupValue: 'typeUser',
+                        groupValue: typeUser,
                         onChanged: (value) {
                           setState(() {
                             typeUser = value;
