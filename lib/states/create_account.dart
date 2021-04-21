@@ -221,7 +221,7 @@ class _CreateAccountState extends State<CreateAccount> {
           Map<String, dynamic> data = model.toMap();
 
           await FirebaseFirestore.instance
-              .collection('user')
+              .collection('User')
               .doc(uid)
               .set(data)
               .then((value) {

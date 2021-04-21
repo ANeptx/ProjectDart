@@ -2,10 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/models/user_model.dart';
+import 'package:flutter_application_1/utility/dialog.dart';
 import 'package:flutter_application_1/utility/my_style.dart';
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_application_1/models/user_model.dart';
 
 class Authen extends StatefulWidget {
   @override
@@ -15,7 +19,7 @@ class Authen extends StatefulWidget {
 class _AuthenState extends State<Authen> {
   double screenWidth, screenHeight;
   bool redEyE = true;
-  String typeUser = 'User', name, email, uid;
+  String typeUser = 'User', name, email, uid, user, password, contact;
 
   @override
   Widget build(BuildContext context) {
@@ -28,8 +32,8 @@ class _AuthenState extends State<Authen> {
           children: [
             MyStyle().buildBackground(screenWidth, screenHeight),
             Positioned(
-              top: 160,
-              left: 125,
+              top: 100,
+              left: 123,
               child: buildLogo(),
             ),
             Center(
@@ -79,7 +83,13 @@ class _AuthenState extends State<Authen> {
         margin: EdgeInsets.only(top: 16),
         child: SignInButton(
           Buttons.Email,
-          onPressed: () {},
+          onPressed: () {
+            if ((password?.isEmpty ?? true) || (user?.isEmpty ?? true)) {
+              normalDialog(context, 'NOTICE', 'Please Fill Completely.');
+            } else {
+              checkAuthen();
+            }
+          },
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
         ),
@@ -114,7 +124,7 @@ class _AuthenState extends State<Authen> {
           );
           await FirebaseAuth.instance
               .signInWithCredential(authCredential)
-              .then((value3) async{
+              .then((value3) async {
             uid = value3.user.uid;
             print(
                 'Login With Gmail Success value with Name = $name, email = $email, uid = $uid');
@@ -134,6 +144,31 @@ class _AuthenState extends State<Authen> {
             });
           });
         });
+      });
+    });
+  }
+
+  Future<Null> insertValueCloudFirestore() async {
+    UserModel model = UserModel(name: name, email: email, typeuser: typeUser);
+    Map<String, dynamic> data = model.toMap();
+
+    await Firebase.initializeApp().then((value) async {
+      await FirebaseFirestore.instance
+          .collection('user')
+          .doc(uid)
+          .set(data)
+          .then((value) {
+        switch (typeUser) {
+          case 'User':
+            Navigator.pushNamedAndRemoveUntil(
+                context, '/myServiceUser', (route) => false);
+            break;
+          case 'Adopter':
+            Navigator.pushNamedAndRemoveUntil(
+                context, '/myServiceAdopter', (route) => false);
+            break;
+          default:
+        }
       });
     });
   }
@@ -184,6 +219,7 @@ class _AuthenState extends State<Authen> {
                     Navigator.pop(context);
                     print(
                         'Call Type User, name = $name, email = $email, typeUser = $typeUser, uid = $uid');
+                    insertValueCloudFirestore();
                   },
                   child: Text('OK'),
                 ),
@@ -199,25 +235,58 @@ class _AuthenState extends State<Authen> {
         margin: EdgeInsets.only(top: 8),
         child: SignInButton(
           Buttons.Facebook,
-          onPressed: () {
-          },
+          onPressed: () {},
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
         ),
       );
 
-    Container buildUser() {
-      return Container(
+  Container buildUser() {
+    return Container(
+      margin: EdgeInsets.only(top: 16),
+      width: screenWidth * 0.6,
+      child: TextField(
+        decoration: InputDecoration(
+          prefixIcon: Icon(
+            Icons.perm_identity,
+            color: MyStyle().darkColor,
+          ),
+          labelStyle: MyStyle().darkStyle(),
+          labelText: 'Email :',
+          enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(30),
+              borderSide: BorderSide(color: MyStyle().darkColor)),
+          focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: MyStyle().lightColor)),
+        ),
+      ),
+    );
+  }
+
+  Container buildPassword() => Container(
         margin: EdgeInsets.only(top: 16),
         width: screenWidth * 0.6,
         child: TextField(
+          obscureText: redEyE,
           decoration: InputDecoration(
+            suffixIcon: IconButton(
+                icon: Icon(
+                  redEyE
+                      ? Icons.remove_red_eye_outlined
+                      : Icons.remove_red_eye_sharp,
+                  color: MyStyle().darkColor,
+                ),
+                onPressed: () {
+                  setState(() {
+                    redEyE = !redEyE;
+                  });
+                }),
             prefixIcon: Icon(
-              Icons.perm_identity,
+              Icons.lock_outlined,
               color: MyStyle().darkColor,
             ),
             labelStyle: MyStyle().darkStyle(),
-            labelText: 'User :',
+            labelText: 'Password :',
             enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(30),
                 borderSide: BorderSide(color: MyStyle().darkColor)),
@@ -226,43 +295,33 @@ class _AuthenState extends State<Authen> {
           ),
         ),
       );
-    }
 
-    Container buildPassword() => Container(
-          margin: EdgeInsets.only(top: 16),
-          width: screenWidth * 0.6,
-          child: TextField(
-            obscureText: redEyE,
-            decoration: InputDecoration(
-              suffixIcon: IconButton(
-                  icon: Icon(
-                    redEyE
-                        ? Icons.remove_red_eye_outlined
-                        : Icons.remove_red_eye_sharp,
-                    color: MyStyle().darkColor,
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      redEyE = !redEyE;
-                    });
-                  }),
-              prefixIcon: Icon(
-                Icons.lock_outlined,
-                color: MyStyle().darkColor,
-              ),
-              labelStyle: MyStyle().darkStyle(),
-              labelText: 'Password :',
-              enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
-                  borderSide: BorderSide(color: MyStyle().darkColor)),
-              focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: MyStyle().lightColor)),
-            ),
-          ),
-        );
-
-
-    buildLogo() {
-      return Container(width: screenWidth * 0.4, child: MyStyle().showLogo());
-    }
+  buildLogo() {
+    return Container(width: screenWidth * 0.4, child: MyStyle().showLogo());
   }
+
+  Future<Null> checkAuthen() async {
+    await Firebase.initializeApp().then((value) async {
+      UserModel model = UserModel(
+          email: user, name: name, typeuser: typeUser, phone: contact);
+      Map<String, dynamic> data = model.toMap();
+
+      await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: user, password: password)
+          .then((value) {
+        switch (typeUser) {
+          case 'User':
+            Navigator.pushNamedAndRemoveUntil(
+                context, '/myServiceUser', (route) => false);
+            break;
+          case 'Adopter':
+            Navigator.pushNamedAndRemoveUntil(
+                context, '/myServiceAdopter', (route) => false);
+            break;
+          default:
+        }
+      }).catchError((onError) =>
+              normalDialog(context, onError.code, onError.message));
+    });
+  }
+}

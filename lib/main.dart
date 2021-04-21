@@ -55,6 +55,7 @@ class MyApp extends StatelessWidget {
       // routes: map,
       // initialRoute: initRoute,
       home: Authen(),
+      routes: PageRouter.map,
     );
   }
 }
