@@ -46,35 +46,62 @@ class _MyServiceAdopterState extends State<MyServiceAdopter> {
             ],
           ),
         ),
-        body: Center(
-          child: CarouselSlider(
-            options: CarouselOptions(
-              enlargeCenterPage: true,
-              enableInfiniteScroll: false,
-              autoPlay: true,
-            ),
-            items: imageList
-                .map((e) => GestureDetector(
-                      onTap: () {
-                        print(e);
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => Cat(catLink: e,),)); // จะให้ไปหน้าไหน ? หน้า cats
-                      },
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: Stack(
-                          fit: StackFit.expand,
-                          children: <Widget>[
-                            Image.network(
-                              e,
-                              width: 1000,
-                              height: 200,
-                              fit: BoxFit.cover,
-                            )
-                          ],
-                        ),
-                      ),
-                    ))
-                .toList(),
+        body: Container(
+
+          constraints: BoxConstraints.expand(),
+          decoration: BoxDecoration(image: DecorationImage(image: NetworkImage('https://i.pinimg.com/originals/20/3b/da/203bda8e39c9a6ba19a7c4758ad15acf.jpg'))),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+
+               Container(
+                 child: Column(
+                  
+                   children: [
+                     Align(
+                       alignment: Alignment.centerLeft,
+                       child: Text('Your Best Friend',style : TextStyle(fontSize : 24))),
+                         Align(
+                   alignment: Alignment.centerLeft,
+                   child: Text('is waiting',style : TextStyle(fontSize : 24))),
+                 Align(
+                   alignment: Alignment.centerLeft,
+                   child: Text('Let your love change the world!',style : TextStyle(fontSize : 24))),
+                   ],
+                 ),
+               ),
+             
+              
+              CarouselSlider(
+                options: CarouselOptions(
+                  enlargeCenterPage: true,
+                  enableInfiniteScroll: false,
+                  autoPlay: true,
+                ),
+                items: imageList
+                    .map((e) => GestureDetector(
+                          onTap: () {
+                            print(e);
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => Cat(catLink: e,),)); // จะให้ไปหน้าไหน ? หน้า cats
+                          },
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: Stack(
+                              fit: StackFit.expand,
+                              children: <Widget>[
+                                Image.network(
+                                  e,
+                                  width: 1000,
+                                  height: 200,
+                                  fit: BoxFit.cover,
+                                )
+                              ],
+                            ),
+                          ),
+                        ))
+                    .toList(),
+              ),
+            ],
           ),
         ),
       ),
