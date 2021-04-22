@@ -4,7 +4,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/user_model.dart';
 import 'package:flutter_application_1/states/my_service_adopter.dart';
-import 'package:flutter_application_1/states/my_service_user.dart';
 import 'package:flutter_application_1/utility/dialog.dart';
 import 'package:flutter_application_1/utility/my_style.dart';
 
@@ -123,9 +122,6 @@ class _CreateAccountState extends State<CreateAccount> {
           child: Column(
             children: [
               buildDisplayName(),
-              buildTitle(),
-              buildTypeUser(),
-              buildTypeAdopter(),
               buildUser(),
               buildPassword(),
               buildContact(),
@@ -137,43 +133,43 @@ class _CreateAccountState extends State<CreateAccount> {
     );
   }
 
-  Container buildTypeUser() {
-    return Container(
-      width: screenWidth * 0.6,
-      child: RadioListTile(
-        value: 'User',
-        groupValue: typeUser,
-        onChanged: (value) {
-          setState(() {
-            typeUser = value;
-          });
-        },
-        title: Text(
-          'User',
-          style: MyStyle().darkStyle(),
-        ),
-      ),
-    );
-  }
+  // Container buildTypeUser() {
+  //   return Container(
+  //     width: screenWidth * 0.6,
+  //     child: RadioListTile(
+  //       value: 'User',
+  //       groupValue: typeUser,
+  //       onChanged: (value) {
+  //         setState(() {
+  //           typeUser = value;
+  //         });
+  //       },
+  //       title: Text(
+  //         'User',
+  //         style: MyStyle().darkStyle(),
+  //       ),
+  //     ),
+  //   );
+  // }
 
-  Container buildTypeAdopter() {
-    return Container(
-      width: screenWidth * 0.6,
-      child: RadioListTile(
-        value: 'Adopter',
-        groupValue: typeUser,
-        onChanged: (value) {
-          setState(() {
-            typeUser = value;
-          });
-        },
-        title: Text(
-          'Adopter',
-          style: MyStyle().darkStyle(),
-        ),
-      ),
-    );
-  }
+  // Container buildTypeAdopter() {
+  //   return Container(
+  //     width: screenWidth * 0.6,
+  //     child: RadioListTile(
+  //       value: 'Adopter',
+  //       groupValue: typeUser,
+  //       onChanged: (value) {
+  //         setState(() {
+  //           typeUser = value;
+  //         });
+  //       },
+  //       title: Text(
+  //         'Adopter',
+  //         style: MyStyle().darkStyle(),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Container buildCreateAccount() {
     return Container(
@@ -195,8 +191,6 @@ class _CreateAccountState extends State<CreateAccount> {
             //  print('Have Space.');
             normalDialog(
                 context, 'NOTICE', 'Please fill your information completely.');
-          } else if (typeUser == null) {
-            normalDialog(context, 'NOTICE', 'Please select your typeuser.');
           } else {
             createAccountAndInsertInformation();
           }
@@ -219,43 +213,21 @@ class _CreateAccountState extends State<CreateAccount> {
           print('Update Profile Success and UID = $uid');
 
           UserModel model = UserModel(
-              email: user, name: name, typeuser: typeUser, phone: contact);
+              email: user, name: name, phone: contact,password: password);
           Map<String, dynamic> data = model.toMap();
 
           await FirebaseFirestore.instance
               .collection('User')
               .doc(uid)
-              .set(data)
-              .then((value) {
-            print('Insert Value To Firestore Success.');
-            switch (typeUser) {
-              case 'User':
-                // Navigator.pushNamedAndRemoveUntil(
-                //     context, '/myServiceUser', (route) => false);
-                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => MyServiceUser(),), (route) => false);
-                break;
-              case 'Adopter':
+              .set(data);
+          
               Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => MyServiceAdopter(),), (route) => false);
                 // Navigator.pushNamedAndRemoveUntil(
                 //     context, '/myServiceAdopter', (route) => false);
-                break;
-              default:
-            }
-          });
         });
       }).catchError((onError) =>
               normalDialog(context, onError.code, onError.message));
     });
   }
-
-  Container buildTitle() {
-    return Container(
-      margin: EdgeInsets.only(top: 24),
-      width: screenWidth * 0.6,
-      child: Text(
-        'Type User:',
-        style: MyStyle().darkStyle(),
-      ),
-    );
-  }
 }
+

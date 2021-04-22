@@ -22,6 +22,8 @@ class _MyServiceAdopterState extends State<MyServiceAdopter> {
     "https://data.whicdn.com/images/246599981/original.jpg",
     "https://krasivosti.pro/uploads/posts/2021-04/1617975209_16-p-kot-britanets-zolotaya-shinshilla-19.jpg",
   ];
+
+  get fontSize => null;
   Widget build(BuildContext context) {
     screenWidth = MediaQuery.of(context).size.width;
     screenHeight = MediaQuery.of(context).size.height;
@@ -47,31 +49,32 @@ class _MyServiceAdopterState extends State<MyServiceAdopter> {
           ),
         ),
         body: Container(
-
           constraints: BoxConstraints.expand(),
-          decoration: BoxDecoration(image: DecorationImage(image: NetworkImage('https://i.pinimg.com/originals/20/3b/da/203bda8e39c9a6ba19a7c4758ad15acf.jpg'))),
+          decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: NetworkImage(
+                      'https://i.pinimg.com/originals/20/3b/da/203bda8e39c9a6ba19a7c4758ad15acf.jpg'))),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-
-               Container(
-                 child: Column(
-                  
-                   children: [
-                     Align(
-                       alignment: Alignment.centerLeft,
-                       child: Text('Your Best Friend',style : TextStyle(fontSize : 24))),
-                         Align(
-                   alignment: Alignment.centerLeft,
-                   child: Text('is waiting',style : TextStyle(fontSize : 24))),
-                 Align(
-                   alignment: Alignment.centerLeft,
-                   child: Text('Let your love change the world!',style : TextStyle(fontSize : 24))),
-                   ],
-                 ),
-               ),
-             
-              
+              // Container(
+              //   child: Column(
+              //     children: [
+              //       Align(
+              //           alignment: Alignment.centerLeft,
+              //           child: Text('Your Best Friend',
+              //               style: TextStyle(fontSize: 24))),
+              //       Align(
+              //           alignment: Alignment.centerLeft,
+              //           child:
+              //               Text('is waiting', style: TextStyle(fontSize: 24))),
+              //       Align(
+              //           alignment: Alignment.centerLeft,
+              //           child: Text('Let your love change the world!',
+              //               style: TextStyle(fontSize: 24))),
+              //     ],
+              //   ),
+              // ),
               CarouselSlider(
                 options: CarouselOptions(
                   enlargeCenterPage: true,
@@ -82,7 +85,13 @@ class _MyServiceAdopterState extends State<MyServiceAdopter> {
                     .map((e) => GestureDetector(
                           onTap: () {
                             print(e);
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => Cat(catLink: e,),)); // จะให้ไปหน้าไหน ? หน้า cats
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Cat(
+                                    catLink: e,
+                                  ),
+                                ));
                           },
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(8),

@@ -20,9 +20,12 @@ class _CatState extends State<Cat> {
               padding: const EdgeInsets.all(30.0),
               child: Container(
                   child: Column(children: [
-      ClipRRect(
-        borderRadius: BorderRadius.circular(20),
-        child: Image.network(widget.catLink)),
+      SizedBox(
+        height: MediaQuery.of(context).size.height / 3,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(20),
+          child: Image.network(widget.catLink)),
+      ),
       Container(
           child: Column(
         children: [

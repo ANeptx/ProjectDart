@@ -9,8 +9,8 @@ import 'package:flutter_application_1/utility/my_style.dart';
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_application_1/models/user_model.dart';
+
+import 'my_service_adopter.dart';
 
 class Authen extends StatefulWidget {
   @override
@@ -18,10 +18,27 @@ class Authen extends StatefulWidget {
 }
 
 class _AuthenState extends State<Authen> {
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
   double screenWidth, screenHeight;
   bool redEyE = true;
-  String typeUser = 'User', name, email, uid, user, password, contact;
 
+
+
+  String name, email, uid, user, password, contact;
+
+  Future<Null> checkAuthen({String email , String password}) async {
+    print('$email $password');
+    await Firebase.initializeApp().then((value) async {
+      await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password)
+          .then((value) {
+            print(value.user.email);
+        print('Insert Firestore Suceess');
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => MyServiceAdopter(),), (route) => false);
+      });
+    });
+  }
   @override
   Widget build(BuildContext context) {
     screenWidth = MediaQuery.of(context).size.width;
@@ -45,7 +62,7 @@ class _AuthenState extends State<Authen> {
                   buildPassword(),
                   buildSignInEmail(),
                   buildSignInGoogle(),
-                  buildSignInFacebook(),
+                  // buildSignInFacebook(),
                   SizedBox(
                     height: screenHeight * 0.2,
                   )
@@ -72,7 +89,9 @@ class _AuthenState extends State<Authen> {
         ),
         TextButton(
           // onPressed: () => Navigator.pushNamed(context, '/createAccount'),
-          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CreateAccount(),)),
+          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return CreateAccount();
+          },)),
           child: Text(
             'Create Account',
             style: MyStyle().pinkStyle(),
@@ -89,7 +108,8 @@ class _AuthenState extends State<Authen> {
         child: SignInButton(
           Buttons.Email,
           onPressed: () {
-              checkAuthen();
+              // checkAuthen();
+              checkAuthen(email: emailController.text.trim(), password: passwordController.text.trim());
           },
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
@@ -137,7 +157,7 @@ class _AuthenState extends State<Authen> {
               print('event ==> ${event.data()}');
               if (event.data() == null) {
                 // Call TypeUser
-                callTypeUserDialog();
+                 callTypeUserDialog();
               } else {
                 // Route to Service by TypeUser
                 print('Route to Service');
@@ -150,27 +170,27 @@ class _AuthenState extends State<Authen> {
   }
 
   Future<Null> insertValueCloudFirestore() async {
-    UserModel model = UserModel(name: name, email: email, typeuser: typeUser);
+    UserModel model = UserModel(name: name, email: email,);
     Map<String, dynamic> data = model.toMap();
 
     await Firebase.initializeApp().then((value) async {
       await FirebaseFirestore.instance
           .collection('User')
           .doc(uid)
-          .set(data)
-          .then((value) {
-        switch (typeUser) {
-          case 'User':
-            Navigator.pushNamedAndRemoveUntil(
-                context, '/myServiceUser', (route) => false);
-            break;
-          case 'Adopter':
-            Navigator.pushNamedAndRemoveUntil(
-                context, '/myServiceAdopter', (route) => false);
-            break;
-          default:
-        }
-      });
+          .set(data);
+      //     .then((value) {
+      //   switch (typeUser) {
+      //     case 'User':
+      //       Navigator.pushNamedAndRemoveUntil(
+      //           context, '/myServiceUser', (route) => false);
+      //       break;
+      //     case 'Adopter':
+      //       Navigator.pushNamedAndRemoveUntil(
+      //           context, '/myServiceAdopter', (route) => false);
+      //       break;
+      //     default:
+      //   }
+      // });
     });
   }
 
@@ -181,48 +201,48 @@ class _AuthenState extends State<Authen> {
         return StatefulBuilder(
           builder: (context, setStage) {
             return SimpleDialog(
-              title: ListTile(
-                //leading: MyStyle().showLogo(),
-                title: Text('Type User?'),
-                subtitle: Text('Please Choose Type User.'),
-              ),
+              // title: ListTile(
+              //   //leading: MyStyle().showLogo(),
+              //   title: Text('Type User?'),
+              //   subtitle: Text('Please Choose Type User.'),
+              // ),
               children: [
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: 50),
                   width: 200,
                   child: Column(
                     children: [
-                      RadioListTile(
-                        value: 'User',
-                        groupValue: typeUser,
-                        onChanged: (value) {
-                          setState(() {
-                            typeUser = value;
-                          });
-                        },
-                        title: Text('User'),
-                      ),
-                      RadioListTile(
-                        value: 'Adopter',
-                        groupValue: typeUser,
-                        onChanged: (value) {
-                          setState(() {
-                            typeUser = value;
-                          });
-                        },
-                        title: Text('Adopter'),
-                      ),
+                      // RadioListTile(
+                      //   value: 'User',
+                      //   groupValue: typeUser,
+                      //   onChanged: (value) {
+                      //     setState(() {
+                      //       typeUser = value;
+                      //     });
+                      //   },
+                      //   title: Text('User'),
+                      // ),
+                      // RadioListTile(
+                      //   value: 'Adopter',
+                      //   groupValue: typeUser,
+                      //   onChanged: (value) {
+                      //     setState(() {
+                      //       typeUser = value;
+                      //     });
+                      //   },
+                      // title: Text('Adopter'),
+                      // ),
                     ],
                   ),
                 ),
                 TextButton(
                   onPressed: () {
-                    Navigator.pop(context);
+                    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => MyServiceAdopter(),), (route) => false);
                     print(
-                        'Call Type User, name = $name, email = $email, typeUser = $typeUser, uid = $uid');
+                        'Call Type User, name = $name, email = $email, uid = $uid');
                     insertValueCloudFirestore();
                   },
-                  child: Text('OK'),
+                  child: Text('Connected Success'),
                 ),
               ],
             );
@@ -232,21 +252,22 @@ class _AuthenState extends State<Authen> {
     );
   }
 
-  Container buildSignInFacebook() => Container(
-        margin: EdgeInsets.only(top: 6),
-        child: SignInButton(
-          Buttons.Facebook,
-          onPressed: () {},
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-        ),
-      );
+  // Container buildSignInFacebook() => Container(
+  //       margin: EdgeInsets.only(top: 6),
+  //       child: SignInButton(
+  //         Buttons.Facebook,
+  //         onPressed: () {},
+  //         shape:
+  //             RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+  //       ),
+  //     );
 
   Container buildUser() {
     return Container(
       margin: EdgeInsets.only(top: 10),
       width: screenWidth * 0.6,
       child: TextField(
+        controller : emailController,
         decoration: InputDecoration(
           prefixIcon: Icon(
             Icons.perm_identity,
@@ -268,6 +289,7 @@ class _AuthenState extends State<Authen> {
         margin: EdgeInsets.only(top: 16),
         width: screenWidth * 0.6,
         child: TextField(
+          controller : passwordController,
           obscureText: redEyE,
           decoration: InputDecoration(
             suffixIcon: IconButton(
@@ -301,34 +323,16 @@ class _AuthenState extends State<Authen> {
     return Container(width: screenWidth * 0.4, child: MyStyle().showLogo());
   }
 
-  Future<Null> checkAuthen() async {
-   UserModel model = UserModel(
-          email: email, name: name, typeuser: typeUser, phone: contact);
-      Map<String, dynamic> data = model.toMap();
 
-      await Firebase.initializeApp().then((value) async {
-      await FirebaseFirestore.instance
-          .collection('User')
-          .doc(uid)
-          .set(data)
-          .then((value) async{
-      await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password)
-          .then((value) {
-        switch (typeUser) {
-          case 'User':
-            Navigator.pushNamedAndRemoveUntil(
-                context, '/myServiceUser', (route) => false);
-            break;
-          case 'Adopter':
-            Navigator.pushNamedAndRemoveUntil(
-                context, '/myServiceAdopter', (route) => false);
-            break;
-          default:
-        }
-      }).catchError((onError) =>
-              normalDialog(context, onError.code, onError.message));
-    },);
-    });
   }
-}
+        // switch (typeUser) {
+        //   case 'User':
+        //     Navigator.pushNamedAndRemoveUntil(
+        //         context, '/myServiceUser', (route) => false);
+        //     break;
+        //   case 'Adopter':
+        //     Navigator.pushNamedAndRemoveUntil(
+        //         context, '/myServiceAdopter', (route) => false);
+        //     break;
+        //   default:
+        // }
