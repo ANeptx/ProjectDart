@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/user_model.dart';
+import 'package:flutter_application_1/states/cats.dart';
 import 'package:flutter_application_1/utility/my_style.dart';
 import 'package:flutter_application_1/widget/my_signout.dart';
 import 'package:flutter_application_1/widget/information.dart';
@@ -11,6 +12,7 @@ class MyServiceAdopter extends StatefulWidget {
 }
 
 class _MyServiceAdopterState extends State<MyServiceAdopter> {
+  double screenWidth, screenHeight;
   String name;
   UserModel model;
 
@@ -21,26 +23,29 @@ class _MyServiceAdopterState extends State<MyServiceAdopter> {
     "https://krasivosti.pro/uploads/posts/2021-04/1617975209_16-p-kot-britanets-zolotaya-shinshilla-19.jpg",
   ];
   Widget build(BuildContext context) {
-    
+    screenWidth = MediaQuery.of(context).size.width;
+    screenHeight = MediaQuery.of(context).size.height;
+
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
           title: Text('Welcome Adopter'),
           backgroundColor: MyStyle().pinkColor,
         ),
-         drawer: Drawer(
-        child: Stack(
-          children: [
-            MySignOut(),
-            Column(
-              children: [
-                buildUserAccountsDrawerHeader(),
-                buildMenuInformation(),
-              ],
-            ),
-          ],
+        floatingActionButton: buildAdoption(),
+        drawer: Drawer(
+          child: Stack(
+            children: [
+              MySignOut(),
+              Column(
+                children: [
+                  buildUserAccountsDrawerHeader(),
+                  buildMenuInformation(),
+                ],
+              ),
+            ],
+          ),
         ),
-      ),
         body: Center(
           child: CarouselSlider(
             options: CarouselOptions(
@@ -49,18 +54,24 @@ class _MyServiceAdopterState extends State<MyServiceAdopter> {
               autoPlay: true,
             ),
             items: imageList
-                .map((e) => ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: Stack(
-                        fit: StackFit.expand,
-                        children: <Widget>[
-                          Image.network(
-                            e,
-                            width: 1000,
-                            height: 200,
-                            fit: BoxFit.cover,
-                          )
-                        ],
+                .map((e) => GestureDetector(
+                      onTap: () {
+                        print(e);
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => Cat(catLink: e,),)); // จะให้ไปหน้าไหน ? หน้า cats
+                      },
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Stack(
+                          fit: StackFit.expand,
+                          children: <Widget>[
+                            Image.network(
+                              e,
+                              width: 1000,
+                              height: 200,
+                              fit: BoxFit.cover,
+                            )
+                          ],
+                        ),
                       ),
                     ))
                 .toList(),
@@ -68,9 +79,9 @@ class _MyServiceAdopterState extends State<MyServiceAdopter> {
         ),
       ),
     );
-
   }
-   ListTile buildMenuInformation() {
+
+  ListTile buildMenuInformation() {
     return ListTile(
       leading: Icon(
         Icons.article,
@@ -80,14 +91,16 @@ class _MyServiceAdopterState extends State<MyServiceAdopter> {
       subtitle: Text('รายละเอียดของผู้ใช้ที่ล็อกอินอยู่'),
       onTap: () {
         setState(() {
-          Information(userModel: model,);
+          Information(
+            userModel: model,
+          );
         });
         Navigator.pop(context);
       },
     );
   }
 
-    UserAccountsDrawerHeader buildUserAccountsDrawerHeader() {
+  UserAccountsDrawerHeader buildUserAccountsDrawerHeader() {
     return UserAccountsDrawerHeader(
       decoration: BoxDecoration(
         image: DecorationImage(
@@ -99,5 +112,26 @@ class _MyServiceAdopterState extends State<MyServiceAdopter> {
       accountEmail: Text('Login'),
       currentAccountPicture: Image.asset('images/logo.png'),
     );
+  }
+
+  buildAdoption() {
+    return Container();
+    //         return Container(
+    //   margin: EdgeInsets.only(top: 24),
+    //   width: screenWidth * 0.6,
+    //   child: ElevatedButton.icon(
+    //     style: ElevatedButton.styleFrom(
+    //       primary: MyStyle().lightpink,
+    //       shape: RoundedRectangleBorder(
+    //         borderRadius: BorderRadius.circular(30),
+    //       ),
+    //       // GestureDetector(
+    //       //   child: Image(image: AssetImage('')),
+    //       //   onTap: (){
+    //       //     Navigator.push(context, MaterialPageRoute(builder: (context) => Cat(),));
+    //       //   },
+    //       // ),
+    //   ),
+    // ));
   }
 }

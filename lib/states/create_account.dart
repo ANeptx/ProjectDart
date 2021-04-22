@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/user_model.dart';
+import 'package:flutter_application_1/states/my_service_adopter.dart';
+import 'package:flutter_application_1/states/my_service_user.dart';
 import 'package:flutter_application_1/utility/dialog.dart';
 import 'package:flutter_application_1/utility/my_style.dart';
 
@@ -228,12 +230,14 @@ class _CreateAccountState extends State<CreateAccount> {
             print('Insert Value To Firestore Success.');
             switch (typeUser) {
               case 'User':
-                Navigator.pushNamedAndRemoveUntil(
-                    context, '/myServiceUser', (route) => false);
+                // Navigator.pushNamedAndRemoveUntil(
+                //     context, '/myServiceUser', (route) => false);
+                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => MyServiceUser(),), (route) => false);
                 break;
               case 'Adopter':
-                Navigator.pushNamedAndRemoveUntil(
-                    context, '/myServiceAdopter', (route) => false);
+              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => MyServiceAdopter(),), (route) => false);
+                // Navigator.pushNamedAndRemoveUntil(
+                //     context, '/myServiceAdopter', (route) => false);
                 break;
               default:
             }

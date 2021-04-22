@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/user_model.dart';
+import 'package:flutter_application_1/states/create_account.dart';
 import 'package:flutter_application_1/utility/dialog.dart';
 import 'package:flutter_application_1/utility/my_style.dart';
 import 'package:flutter_signin_button/button_list.dart';
@@ -63,13 +64,15 @@ class _AuthenState extends State<Authen> {
       children: [
         SizedBox(
           width: 50,
+
         ),
         Text(
           'No Account?',
           style: MyStyle().lightStyle(),
         ),
         TextButton(
-          onPressed: () => Navigator.pushNamed(context, '/createAccount'),
+          // onPressed: () => Navigator.pushNamed(context, '/createAccount'),
+          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CreateAccount(),)),
           child: Text(
             'Create Account',
             style: MyStyle().pinkStyle(),
