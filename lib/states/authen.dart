@@ -170,7 +170,7 @@ class _AuthenState extends State<Authen> {
   }
 
   Future<Null> insertValueCloudFirestore() async {
-    UserModel model = UserModel(name: name, email: email,);
+    UserModel model = UserModel(name: name, email: email, phone: contact);
     Map<String, dynamic> data = model.toMap();
 
     await Firebase.initializeApp().then((value) async {
@@ -238,9 +238,9 @@ class _AuthenState extends State<Authen> {
                 TextButton(
                   onPressed: () {
                     Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => MyServiceAdopter(),), (route) => false);
+                    insertValueCloudFirestore();
                     print(
                         'Call Type User, name = $name, email = $email, uid = $uid');
-                    insertValueCloudFirestore();
                   },
                   child: Text('Connected Success'),
                 ),

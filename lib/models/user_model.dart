@@ -3,7 +3,6 @@ import 'dart:convert';
 class UserModel {
   final String email;
   final String name;
-  final String typeuser;
   final String phone;
   final String password;
   final String address;
@@ -11,7 +10,6 @@ class UserModel {
   UserModel({
     this.email,
     this.name,
-    this.typeuser,
     this.phone,
     this.password,
     this.address,
@@ -22,7 +20,6 @@ class UserModel {
   UserModel copyWith({
     String email,
     String name,
-    String typeuser,
     String phone,
     String password,
     String address,
@@ -31,7 +28,6 @@ class UserModel {
     return UserModel(
       email: email ?? this.email,
       name: name ?? this.name,
-      typeuser: typeuser ?? this.typeuser,
       phone: phone ?? this.phone,
       password: password ?? this.password,
       address: address ?? this.address,
@@ -43,7 +39,6 @@ class UserModel {
     return {
       'email': email,
       'name': name,
-      'typeuser': typeuser,
       'phone': phone,
       'password': password,
       'address': address,
@@ -55,7 +50,6 @@ class UserModel {
     return UserModel(
       email: map['email'],
       name: map['name'],
-      typeuser: map['typeuser'],
       phone: map['phone'],
       password: map['password'],
       address: map['address'],
@@ -69,7 +63,7 @@ class UserModel {
 
   @override
   String toString() {
-    return 'UserModel(email: $email, name: $name, typeuser: $typeuser, phone: $phone, password: $password, address: $address, gender: $gender)';
+    return 'UserModel(email: $email, name: $name, phone: $phone, password: $password, address: $address, gender: $gender)';
   }
 
   @override
@@ -79,7 +73,6 @@ class UserModel {
     return other is UserModel &&
       other.email == email &&
       other.name == name &&
-      other.typeuser == typeuser &&
       other.phone == phone &&
       other.password == password &&
       other.address == address &&
@@ -90,7 +83,6 @@ class UserModel {
   int get hashCode {
     return email.hashCode ^
       name.hashCode ^
-      typeuser.hashCode ^
       phone.hashCode ^
       password.hashCode ^
       address.hashCode ^
