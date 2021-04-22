@@ -35,6 +35,7 @@ dependencies:
   google_sign_in: ^5.0.2
   flutter_swiper: ^1.1.6
   carousel_slider: ^3.0.0
+  flutter_svg: ^0.21.0+1
 
   
 

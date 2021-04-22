@@ -32,8 +32,8 @@ class _AuthenState extends State<Authen> {
           children: [
             MyStyle().buildBackground(screenWidth, screenHeight),
             Positioned(
-              top: 100,
-              left: 123,
+              top: 88,
+              left: 120,
               child: buildLogo(),
             ),
             Center(
@@ -73,6 +73,7 @@ class _AuthenState extends State<Authen> {
           child: Text(
             'Create Account',
             style: MyStyle().pinkStyle(),
+            overflow: TextOverflow.ellipsis,
           ),
         )
       ],
@@ -80,11 +81,12 @@ class _AuthenState extends State<Authen> {
   }
 
   Container buildSignInEmail() => Container(
-        margin: EdgeInsets.only(top: 16),
+    
+        margin: EdgeInsets.only(top: 12),
         child: SignInButton(
           Buttons.Email,
           onPressed: () {
-            if ((password?.isEmpty ?? true) || (user?.isEmpty ?? true)) {
+            if ((email?.isEmpty ?? true) || (password?.isEmpty ?? true)) {
               normalDialog(context, 'NOTICE', 'Please Fill Completely.');
             } else {
               checkAuthen();
@@ -96,7 +98,7 @@ class _AuthenState extends State<Authen> {
       );
 
   Container buildSignInGoogle() => Container(
-        margin: EdgeInsets.only(top: 8),
+        margin: EdgeInsets.only(top: 6),
         child: SignInButton(
           Buttons.Google,
           onPressed: () => processSignInWithGoogle(),
@@ -116,7 +118,7 @@ class _AuthenState extends State<Authen> {
     await Firebase.initializeApp().then((value) async {
       await _googleSignIn.signIn().then((value) async {
         name = value.displayName;
-        email = value.email;
+        email = value.email;  
         await value.authentication.then((value2) async {
           AuthCredential authCredential = GoogleAuthProvider.credential(
             idToken: value2.idToken,
@@ -129,7 +131,7 @@ class _AuthenState extends State<Authen> {
             print(
                 'Login With Gmail Success value with Name = $name, email = $email, uid = $uid');
             await FirebaseFirestore.instance
-                .collection('user')
+                .collection('User')
                 .doc(uid)
                 .snapshots()
                 .listen((event) {
@@ -154,7 +156,7 @@ class _AuthenState extends State<Authen> {
 
     await Firebase.initializeApp().then((value) async {
       await FirebaseFirestore.instance
-          .collection('user')
+          .collection('User')
           .doc(uid)
           .set(data)
           .then((value) {
@@ -232,7 +234,7 @@ class _AuthenState extends State<Authen> {
   }
 
   Container buildSignInFacebook() => Container(
-        margin: EdgeInsets.only(top: 8),
+        margin: EdgeInsets.only(top: 6),
         child: SignInButton(
           Buttons.Facebook,
           onPressed: () {},
@@ -243,7 +245,7 @@ class _AuthenState extends State<Authen> {
 
   Container buildUser() {
     return Container(
-      margin: EdgeInsets.only(top: 16),
+      margin: EdgeInsets.only(top: 10),
       width: screenWidth * 0.6,
       child: TextField(
         decoration: InputDecoration(
@@ -301,13 +303,18 @@ class _AuthenState extends State<Authen> {
   }
 
   Future<Null> checkAuthen() async {
-    await Firebase.initializeApp().then((value) async {
-      UserModel model = UserModel(
-          email: user, name: name, typeuser: typeUser, phone: contact);
+   UserModel model = UserModel(
+          email: email, name: name, typeuser: typeUser, phone: contact);
       Map<String, dynamic> data = model.toMap();
 
+      await Firebase.initializeApp().then((value) async {
+      await FirebaseFirestore.instance
+          .collection('User')
+          .doc(uid)
+          .set(data)
+          .then((value) async{
       await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: user, password: password)
+          .signInWithEmailAndPassword(email: email, password: password)
           .then((value) {
         switch (typeUser) {
           case 'User':
@@ -322,6 +329,7 @@ class _AuthenState extends State<Authen> {
         }
       }).catchError((onError) =>
               normalDialog(context, onError.code, onError.message));
+    },);
     });
   }
 }
