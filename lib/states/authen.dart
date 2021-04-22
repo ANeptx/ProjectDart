@@ -89,11 +89,7 @@ class _AuthenState extends State<Authen> {
         child: SignInButton(
           Buttons.Email,
           onPressed: () {
-            if ((email?.isEmpty ?? true) || (password?.isEmpty ?? true)) {
-              normalDialog(context, 'NOTICE', 'Please Fill Completely.');
-            } else {
               checkAuthen();
-            }
           },
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
