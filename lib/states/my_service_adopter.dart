@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/user_model.dart';
 import 'package:flutter_application_1/utility/my_style.dart';
 import 'package:flutter_application_1/widget/my_signout.dart';
+import 'package:flutter_application_1/widget/information.dart';
 
 class MyServiceAdopter extends StatefulWidget {
   @override
@@ -79,7 +80,7 @@ class _MyServiceAdopterState extends State<MyServiceAdopter> {
       subtitle: Text('รายละเอียดของผู้ใช้ที่ล็อกอินอยู่'),
       onTap: () {
         setState(() {
-         // current = Information(userModel: model,);
+          Information(userModel: model,);
         });
         Navigator.pop(context);
       },

@@ -185,7 +185,7 @@ class _AuthenState extends State<Authen> {
               title: ListTile(
                 //leading: MyStyle().showLogo(),
                 title: Text('Type User?'),
-                subtitle: Text('Please Coose Type User.'),
+                subtitle: Text('Please Choose Type User.'),
               ),
               children: [
                 Container(
