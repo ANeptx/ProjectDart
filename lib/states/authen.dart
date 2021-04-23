@@ -25,7 +25,7 @@ class _AuthenState extends State<Authen> {
 
 
 
-  String name, email, uid, user, password, contact;
+  String name, email, uid, user, password, contact, address;
 
   Future<Null> checkAuthen({String email , String password}) async {
     print('$email $password');
@@ -170,7 +170,7 @@ class _AuthenState extends State<Authen> {
   }
 
   Future<Null> insertValueCloudFirestore() async {
-    UserModel model = UserModel(name: name, email: email, phone: contact);
+    UserModel model = UserModel(name: name, email: email, phone: contact, address: address);
     Map<String, dynamic> data = model.toMap();
 
     await Firebase.initializeApp().then((value) async {

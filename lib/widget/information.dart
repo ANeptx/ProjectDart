@@ -17,7 +17,7 @@ class Information extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               buildName(),
-              buildGender(),
+              // buildGender(),
               buildAddress(),
               buildPhone(),
             ],
@@ -105,29 +105,29 @@ class Information extends StatelessWidget {
     );
   }
 
-  Row buildGender() {
-    return Row(
-      children: [
-        Expanded(
-          flex: 1,
-          child: Text(
-            'Gender :',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
-            ),
-          ),
-        ),
-        Expanded(
-            flex: 3,
-            child: Text(
-              userModel.gender,
-              style: TextStyle(
-                fontWeight: FontWeight.w500,
-                fontSize: 16,
-              ),
-            )),
-      ],
-    );
-  }
+  // Row buildGender() {
+  //   return Row(
+  //     children: [
+  //       Expanded(
+  //         flex: 1,
+  //         child: Text(
+  //           'Gender :',
+  //           style: TextStyle(
+  //             fontWeight: FontWeight.bold,
+  //             fontSize: 16,
+  //           ),
+  //         ),
+  //       ),
+  //       Expanded(
+  //           flex: 3,
+  //           child: Text(
+  //             userModel.gender,
+  //             style: TextStyle(
+  //               fontWeight: FontWeight.w500,
+  //               fontSize: 16,
+  //             ),
+  //           )),
+  //     ],
+  //   );
+  // }
 }

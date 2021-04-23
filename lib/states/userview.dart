@@ -27,10 +27,9 @@ class _UserViewState extends State<UserView> {
   Card userCard({
     String address,
     String email,
-    String gender,
     String name,
     String phone,
-    String uid,
+    String uid
   }) {
     return Card(
       child: Padding(
@@ -49,8 +48,7 @@ class _UserViewState extends State<UserView> {
             Text('$name'),
             Text('$email'),
             Text('$address'),
-            Text('$gender'),
-            Text('$phone'),
+            Text('$phone')
           ],
         ),
       ),
@@ -72,8 +70,7 @@ class _UserViewState extends State<UserView> {
             email: users[index]['email'],
             name: users[index]['name'],
             phone: users[index]['phone'],
-            gender: users[index]['gender'],
-            uid :users[index]['uid'],
+            uid :users[index]['uid']
           ),
         ));
   }

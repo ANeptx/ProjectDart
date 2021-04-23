@@ -6,7 +6,7 @@ class UserModel {
   final String phone;
   final String password;
   final String address;
-  final String gender;
+  // final String gender;
   final String uid;
   UserModel({
     this.email,
@@ -14,7 +14,7 @@ class UserModel {
     this.phone,
     this.password,
     this.address,
-    this.gender,
+    // this.gender,
     this.uid,
   });
   
@@ -25,7 +25,7 @@ class UserModel {
     String phone,
     String password,
     String address,
-    String gender,
+    // String gender,
     String uid,
   }) {
     return UserModel(
@@ -34,7 +34,7 @@ class UserModel {
       phone: phone ?? this.phone,
       password: password ?? this.password,
       address: address ?? this.address,
-      gender: gender ?? this.gender,
+      // gender: gender ?? this.gender,
       uid : uid ?? this.uid,
     );
   }
@@ -46,7 +46,7 @@ class UserModel {
       'phone': phone,
       'password': password,
       'address': address,
-      'gender': gender,
+      // 'gender': gender,
       'uid' : uid,
     };
   }
@@ -58,7 +58,7 @@ class UserModel {
       phone: map['phone'],
       password: map['password'],
       address: map['address'],
-      gender: map['gender'],
+      // gender: map['gender'],
       uid : map['uid'],
     );
   }
@@ -69,7 +69,7 @@ class UserModel {
 
   @override
   String toString() {
-    return 'UserModel(email: $email, name: $name, phone: $phone, password: $password, address: $address, gender: $gender , uid : $uid)';
+    return 'UserModel(email: $email, name: $name, phone: $phone, password: $password, address: $address, uid : $uid)';
   }
 
   @override
@@ -81,8 +81,8 @@ class UserModel {
       other.name == name &&
       other.phone == phone &&
       other.password == password &&
-      other.address == address &&
-      other.gender == gender;
+      other.address == address;
+      // other.gender == gender;
       
   }
 
@@ -92,7 +92,7 @@ class UserModel {
       name.hashCode ^
       phone.hashCode ^
       password.hashCode ^
-      address.hashCode ^
-      gender.hashCode;
+      address.hashCode;
+      // gender.hashCode;
   }
   }

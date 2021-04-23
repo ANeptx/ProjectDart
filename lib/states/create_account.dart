@@ -14,7 +14,7 @@ class CreateAccount extends StatefulWidget {
 
 class _CreateAccountState extends State<CreateAccount> {
   double screenWidth, screenHeight;
-  String name, typeUser, user, password, contact;
+  String name, user, password, contact, address, gender;
 
   Container buildDisplayName() {
     return Container(
@@ -108,6 +108,29 @@ class _CreateAccountState extends State<CreateAccount> {
     );
   }
 
+  Container buildAddress() {
+    return Container(
+      margin: EdgeInsets.only(top: 24),
+      width: screenWidth * 0.6,
+      child: TextField(
+        onChanged: (value) => address = value.trim(),
+        decoration: InputDecoration(
+          prefixIcon: Icon(
+            Icons.home_outlined,
+            color: MyStyle().darkColor,
+          ),
+          labelStyle: MyStyle().darkStyle(),
+          labelText: 'Address :',
+          enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(30),
+              borderSide: BorderSide(color: MyStyle().darkColor)),
+          focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: MyStyle().lightColor)),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     screenWidth = MediaQuery.of(context).size.width;
@@ -125,7 +148,9 @@ class _CreateAccountState extends State<CreateAccount> {
               buildUser(),
               buildPassword(),
               buildContact(),
+              buildAddress(),
               buildCreateAccount(),
+              
             ],
           ),
         ),
@@ -133,38 +158,38 @@ class _CreateAccountState extends State<CreateAccount> {
     );
   }
 
-  // Container buildTypeUser() {
+  // Container buildTypeMale() {
   //   return Container(
   //     width: screenWidth * 0.6,
   //     child: RadioListTile(
-  //       value: 'User',
-  //       groupValue: typeUser,
+  //       value: 'Male',
+  //       groupValue: typeGender,
   //       onChanged: (value) {
   //         setState(() {
   //           typeUser = value;
   //         });
   //       },
   //       title: Text(
-  //         'User',
+  //         'Male',
   //         style: MyStyle().darkStyle(),
   //       ),
   //     ),
   //   );
   // }
 
-  // Container buildTypeAdopter() {
+  // Container buildTypeFemale() {
   //   return Container(
   //     width: screenWidth * 0.6,
   //     child: RadioListTile(
-  //       value: 'Adopter',
-  //       groupValue: typeUser,
+  //       value: 'Female',
+  //       groupValue: typeGender,
   //       onChanged: (value) {
   //         setState(() {
   //           typeUser = value;
   //         });
   //       },
   //       title: Text(
-  //         'Adopter',
+  //         'Female',
   //         style: MyStyle().darkStyle(),
   //       ),
   //     ),
@@ -186,7 +211,8 @@ class _CreateAccountState extends State<CreateAccount> {
           if ((name?.isEmpty ?? true) ||
               (user?.isEmpty ?? true) ||
               (password?.isEmpty ?? true) ||
-              (contact?.isEmpty ?? true)) {
+              (contact?.isEmpty ?? true) ||
+              (address?.isEmpty ?? true)) {
             // ?? คือการ AND
             //  print('Have Space.');
             normalDialog(
@@ -213,7 +239,7 @@ class _CreateAccountState extends State<CreateAccount> {
           print('Update Profile Success and UID = $uid');
 
           UserModel model = UserModel(
-              email: user, name: name, phone: contact,password: password , uid: uid);
+              email: user, name: name, phone: contact,password: password , uid: uid, address: address);
           Map<String, dynamic> data = model.toMap();
 
           await FirebaseFirestore.instance
