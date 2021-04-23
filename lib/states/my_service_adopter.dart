@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/user_model.dart';
 import 'package:flutter_application_1/states/cats.dart';
+import 'package:flutter_application_1/states/userview.dart';
 import 'package:flutter_application_1/utility/my_style.dart';
 import 'package:flutter_application_1/widget/my_signout.dart';
 import 'package:flutter_application_1/widget/information.dart';
@@ -32,6 +33,11 @@ class _MyServiceAdopterState extends State<MyServiceAdopter> {
       home: Scaffold(
         appBar: AppBar(
           title: Text('Welcome Adopter'),
+          actions: [
+            IconButton(icon: Icon(Icons.account_circle), onPressed: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context) => UserView(),));
+            })
+          ],
           backgroundColor: MyStyle().pinkColor,
         ),
         floatingActionButton: buildAdoption(),

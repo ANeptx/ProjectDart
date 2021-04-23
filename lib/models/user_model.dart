@@ -7,6 +7,7 @@ class UserModel {
   final String password;
   final String address;
   final String gender;
+  final String uid;
   UserModel({
     this.email,
     this.name,
@@ -14,6 +15,7 @@ class UserModel {
     this.password,
     this.address,
     this.gender,
+    this.uid,
   });
   
 
@@ -24,6 +26,7 @@ class UserModel {
     String password,
     String address,
     String gender,
+    String uid,
   }) {
     return UserModel(
       email: email ?? this.email,
@@ -32,6 +35,7 @@ class UserModel {
       password: password ?? this.password,
       address: address ?? this.address,
       gender: gender ?? this.gender,
+      uid : uid ?? this.uid,
     );
   }
 
@@ -43,6 +47,7 @@ class UserModel {
       'password': password,
       'address': address,
       'gender': gender,
+      'uid' : uid,
     };
   }
 
@@ -54,6 +59,7 @@ class UserModel {
       password: map['password'],
       address: map['address'],
       gender: map['gender'],
+      uid : map['uid'],
     );
   }
 
@@ -63,7 +69,7 @@ class UserModel {
 
   @override
   String toString() {
-    return 'UserModel(email: $email, name: $name, phone: $phone, password: $password, address: $address, gender: $gender)';
+    return 'UserModel(email: $email, name: $name, phone: $phone, password: $password, address: $address, gender: $gender , uid : $uid)';
   }
 
   @override
@@ -77,6 +83,7 @@ class UserModel {
       other.password == password &&
       other.address == address &&
       other.gender == gender;
+      
   }
 
   @override

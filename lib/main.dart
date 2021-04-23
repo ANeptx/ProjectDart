@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/user_model.dart';
 import 'package:flutter_application_1/router.dart';
 import 'package:flutter_application_1/states/authen.dart';
+import 'package:flutter_application_1/states/userview.dart';
 
 String initRoute = '/authen';
 
@@ -54,6 +55,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       // routes: map,
       // initialRoute: initRoute,
+      // home: UserView(),
+
       home: Authen(),
       routes: PageRouter.map,
     );

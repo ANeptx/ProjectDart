@@ -213,7 +213,7 @@ class _CreateAccountState extends State<CreateAccount> {
           print('Update Profile Success and UID = $uid');
 
           UserModel model = UserModel(
-              email: user, name: name, phone: contact,password: password);
+              email: user, name: name, phone: contact,password: password , uid: uid);
           Map<String, dynamic> data = model.toMap();
 
           await FirebaseFirestore.instance
